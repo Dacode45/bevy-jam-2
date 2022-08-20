@@ -1,8 +1,10 @@
 mod actions;
 mod audio;
+mod camera;
 mod loading;
 mod menu;
 mod player;
+mod world;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
@@ -14,6 +16,12 @@ use bevy::app::App;
 #[cfg(debug_assertions)]
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
+#[cfg(debug_assertions)]
+use bevy_debug_text_overlay::{screen_print, OverlayPlugin};
+use bevy_inspector_egui::WorldInspectorPlugin;
+use bevy_prototype_debug_lines::DebugLinesPlugin;
+use camera::GameCameraPlugin;
+use world::GameWorldPlugin;
 
 // This example game uses States to separate logic
 // See https://bevy-cheatbook.github.io/programming/states.html
@@ -37,12 +45,20 @@ impl Plugin for GamePlugin {
             .add_plugin(MenuPlugin)
             .add_plugin(ActionsPlugin)
             .add_plugin(InternalAudioPlugin)
+            .add_plugin(GameWorldPlugin)
+            .add_plugin(GameCameraPlugin)
             .add_plugin(PlayerPlugin);
 
         #[cfg(debug_assertions)]
         {
             app.add_plugin(FrameTimeDiagnosticsPlugin::default())
-                .add_plugin(LogDiagnosticsPlugin::default());
+                .add_plugin(LogDiagnosticsPlugin::default())
+                .add_plugin(OverlayPlugin {
+                    font_size: 32.0,
+                    ..default()
+                })
+                .add_plugin(DebugLinesPlugin::default())
+                .add_plugin(WorldInspectorPlugin::new());
         }
     }
 }
