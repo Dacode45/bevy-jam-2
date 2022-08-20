@@ -1,5 +1,7 @@
 use core::panic;
 
+use crate::systems::proto_ambient_light::proto_ambient_initialize;
+use crate::systems::proto_light::{self, proto_light_initialize};
 use crate::utils::iter_hierarchy;
 use crate::{loading::GltfAssets, GameState};
 
@@ -12,22 +14,40 @@ use bevy_proto::prelude::ProtoData;
 use bevy_proto::ProtoComponent;
 use serde::{Deserialize, Serialize};
 
-pub struct GameWorldPlugin;
+pub struct CustomPrototypePlugin;
 
-impl Plugin for GameWorldPlugin {
+impl Plugin for CustomPrototypePlugin {
     fn build(&self, app: &mut App) {
-        app.add_system_set(
-            SystemSet::on_update(GameState::Initialize).with_system(gltf_load_world),
-        )
-        .add_system_set(SystemSet::on_update(GameState::Playing).with_system(gltf_initialize));
+        app.add_system(proto_initialize)
+            .add_system(proto_ambient_initialize)
+            .add_system(proto_light_initialize);
     }
 }
 
-#[derive(Clone, Component, Debug, PartialEq, Reflect, Inspectable)]
+#[derive(Clone, Debug, PartialEq)]
+pub struct ProtoStateData {
+    pub proto: String,
+    pub name: String,
+}
+
+#[derive(Clone, Component, Debug, PartialEq, Reflect)]
 #[reflect(Component)]
 pub enum ProtoState {
     NotProto,
-    Initialized(String),
+    Initialized(ProtoStateData), // prototype name, node name
+}
+
+impl ProtoState {
+    fn new(proto: String, name: String) -> Self {
+        Self::Initialized(ProtoStateData { proto, name })
+    }
+
+    pub fn get_name(&self) -> Option<&str> {
+        match &self {
+            ProtoState::Initialized(data) => Some(&data.name),
+            _ => None,
+        }
+    }
 }
 
 impl Default for ProtoState {
@@ -35,31 +55,8 @@ impl Default for ProtoState {
         Self::NotProto
     }
 }
-fn gltf_load_world(
-    mut commands: Commands,
-    mut state: ResMut<State<GameState>>,
-    res: Res<GltfAssets>,
-    assets_gltf: Res<Assets<Gltf>>,
-) {
-    commands.insert_resource(AmbientLight {
-        color: Color::GRAY,
-        brightness: 0.02,
-    });
 
-    let temp_level = assets_gltf.get(&res.test_level).unwrap();
-
-    commands.spawn_bundle(SceneBundle {
-        scene: temp_level.scenes[0].clone(),
-        ..default()
-    });
-
-    state.set(GameState::Playing).unwrap();
-}
-
-#[derive(Clone, Serialize, Deserialize, ProtoComponent, Component)]
-struct Static;
-
-fn gltf_initialize(
+fn proto_initialize(
     mut commands: Commands,
     mut levels: Query<(Entity, &mut SceneInstance)>,
     children: Query<&Children>,
@@ -84,7 +81,7 @@ fn gltf_initialize(
 
                         proto
                             .insert(commands.entity(entity), &data, &asset_server)
-                            .insert(ProtoState::Initialized(proto_name.to_string()));
+                            .insert(ProtoState::new(proto_name.to_string(), name.to_string()));
                         proto_added = true;
                     }
                 }
@@ -93,7 +90,5 @@ fn gltf_initialize(
                 commands.entity(entity).insert(ProtoState::NotProto);
             }
         });
-
-        // level.0 = LevelState::Initialized
     }
 }

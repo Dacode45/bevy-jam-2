@@ -1,4 +1,4 @@
-use bevy::{prelude::*};
+use bevy::prelude::*;
 use bevy_proto::{prelude::ProtoCommands, ProtoComponent};
 use serde::{Deserialize, Serialize};
 
@@ -43,6 +43,7 @@ impl StartingTransformData {
     }
 }
 
+#[system]
 pub fn starting_transform_initialize(
     mut starting_transforms: Query<(&mut StartingTransformData, &Transform)>,
 ) {
@@ -51,6 +52,7 @@ pub fn starting_transform_initialize(
     }
 }
 
+#[system]
 pub fn starting_transform_set(
     mut starting_transforms: Query<(&mut StartingTransformData, &mut Transform)>,
 ) {

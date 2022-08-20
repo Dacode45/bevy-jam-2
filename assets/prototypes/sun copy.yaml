@@ -1,4 +1,4 @@
-name: "Sun"
+name: "Point"
 components: 
   - type: LightProto
   - type: StartingTransform

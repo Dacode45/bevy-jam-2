@@ -349,6 +349,7 @@ dependencies = [
  "anyhow",
  "bevy",
  "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -406,6 +407,20 @@ dependencies = [
  "bevy_log",
  "bevy_time",
  "bevy_utils",
+]
+
+[[package]]
+name = "bevy_discovery"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f763294510a98c166814f8948609a34993b036ff28e50626adc0b16c19415ba3"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "ron 0.6.6",
+ "rustc-hash",
+ "serde",
+ "syn",
 ]
 
 [[package]]
@@ -790,7 +805,7 @@ dependencies = [
  "bevy_render",
  "bevy_transform",
  "bevy_utils",
- "ron",
+ "ron 0.7.1",
  "serde",
  "thiserror",
  "uuid",
@@ -1686,6 +1701,7 @@ dependencies = [
  "bevy-scene-hook",
  "bevy_asset_loader",
  "bevy_common_assets",
+ "bevy_discovery",
  "bevy_flycam",
  "bevy_kira_audio",
  "bevy_proto",
@@ -2835,6 +2851,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f65af18d50f789e74aaf23bbb3f65dcd22a3cb6e029b5bced149f6bd57c5c2a2"
 dependencies = [
  "cache-padded",
+]
+
+[[package]]
+name = "ron"
+version = "0.6.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "86018df177b1beef6c7c8ef949969c4f7cb9a9344181b92486b23c79995bdaa4"
+dependencies = [
+ "base64",
+ "bitflags",
+ "serde",
 ]
 
 [[package]]

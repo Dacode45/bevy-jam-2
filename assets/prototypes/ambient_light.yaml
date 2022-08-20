@@ -1,0 +1,4 @@
+name: "AmbientLight"
+components: 
+  - type: AmbientLightProto
+  - type: StartingTransform

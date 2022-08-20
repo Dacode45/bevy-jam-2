@@ -1,12 +1,16 @@
+#[macro_use]
+extern crate bevy_discovery;
+
 mod actions;
 mod audio;
+mod custom_plugins;
 mod loading;
 mod menu;
 mod player;
-mod prototypes;
+// mod prototypes;
 mod systems;
 mod utils;
-mod world;
+// mod world;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
@@ -14,16 +18,19 @@ use crate::loading::LoadingPlugin;
 use crate::menu::MenuPlugin;
 use crate::player::PlayerPlugin;
 
+use crate::custom_plugins::discovery::DiscoveryPlugin;
 use bevy::app::App;
 #[cfg(debug_assertions)]
-use bevy::diagnostic::{FrameTimeDiagnosticsPlugin};
+use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 use bevy::prelude::*;
 #[cfg(debug_assertions)]
-use bevy_debug_text_overlay::{OverlayPlugin};
+use bevy_debug_text_overlay::OverlayPlugin;
 use bevy_inspector_egui::WorldInspectorPlugin;
 use bevy_proto::ProtoPlugin;
 use bevy_prototype_debug_lines::DebugLinesPlugin;
-use world::GameWorldPlugin;
+use custom_plugins::levels::LevelPlugin;
+use custom_plugins::prototypes::CustomPrototypePlugin;
+use custom_plugins::CustomPlugins;
 
 // This example game uses States to separate logic
 // See https://bevy-cheatbook.github.io/programming/states.html
@@ -45,11 +52,14 @@ pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state(GameState::Loading)
+            .add_plugin(DiscoveryPlugin)
+            .add_plugin(CustomPlugins)
             .add_plugin(LoadingPlugin)
             .add_plugin(MenuPlugin)
             .add_plugin(ActionsPlugin)
             .add_plugin(InternalAudioPlugin)
-            .add_plugin(GameWorldPlugin)
+            .add_plugin(LevelPlugin)
+            .add_plugin(CustomPrototypePlugin)
             .add_plugin(ProtoPlugin::default())
             .add_plugin(PlayerPlugin);
 

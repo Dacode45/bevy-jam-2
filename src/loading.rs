@@ -1,4 +1,4 @@
-use crate::GameState;
+use crate::{custom_plugins::json_gltf::JsonGltf, GameState};
 use bevy::{gltf::Gltf, prelude::*};
 use bevy_asset_loader::prelude::*;
 use bevy_kira_audio::AudioSource;
@@ -16,6 +16,7 @@ impl Plugin for LoadingPlugin {
                 .with_collection::<AudioAssets>()
                 .with_collection::<TextureAssets>()
                 .with_collection::<GltfAssets>()
+                .with_collection::<JsonAssets>()
                 .continue_to_state(GameState::Initialize),
         );
     }
@@ -40,6 +41,12 @@ pub struct AudioAssets {
 pub struct TextureAssets {
     #[asset(path = "textures/bevy.png")]
     pub texture_bevy: Handle<Image>,
+}
+
+#[derive(AssetCollection)]
+pub struct JsonAssets {
+    #[asset(path = "gltf/test_level.json")]
+    pub test_level: Handle<JsonGltf>,
 }
 
 #[derive(AssetCollection)]
