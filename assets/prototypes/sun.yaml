@@ -1,0 +1,4 @@
+name: "Sun"
+components: 
+  - type: SunProto
+  - type: StartingTransform

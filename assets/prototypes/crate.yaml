@@ -1,0 +1,4 @@
+name: "Crate"
+components: 
+  - type: Static
+  - type: StartingTransform
