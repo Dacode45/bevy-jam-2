@@ -16,10 +16,10 @@ use crate::player::PlayerPlugin;
 
 use bevy::app::App;
 #[cfg(debug_assertions)]
-use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
+use bevy::diagnostic::{FrameTimeDiagnosticsPlugin};
 use bevy::prelude::*;
 #[cfg(debug_assertions)]
-use bevy_debug_text_overlay::{screen_print, OverlayPlugin};
+use bevy_debug_text_overlay::{OverlayPlugin};
 use bevy_inspector_egui::WorldInspectorPlugin;
 use bevy_proto::ProtoPlugin;
 use bevy_prototype_debug_lines::DebugLinesPlugin;

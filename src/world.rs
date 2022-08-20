@@ -2,12 +2,12 @@ use core::panic;
 
 use crate::utils::iter_hierarchy;
 use crate::{loading::GltfAssets, GameState};
-use bevy::ecs::archetype::Archetypes;
-use bevy::ecs::component::{ComponentId, Components};
-use bevy::gltf::{Gltf, GltfExtras};
+
+
+use bevy::gltf::{Gltf};
 use bevy::prelude::*;
 use bevy::scene::SceneInstance;
-use bevy_debug_text_overlay::screen_print;
+
 use bevy_inspector_egui::Inspectable;
 use bevy_proto::prelude::ProtoData;
 use bevy_proto::ProtoComponent;
