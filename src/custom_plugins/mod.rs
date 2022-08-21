@@ -1,9 +1,10 @@
 use self::json_gltf::JsonGltfPlugin;
 
+pub mod discovery;
 pub mod json_gltf;
 pub mod levels;
+pub mod phsyics;
 pub mod prototypes;
-pub mod discovery;
 
 use crate::utils::iter_hierarchy;
 use crate::{loading::GltfAssets, GameState};

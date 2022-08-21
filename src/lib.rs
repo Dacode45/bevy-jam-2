@@ -28,6 +28,8 @@ use bevy_debug_text_overlay::OverlayPlugin;
 use bevy_inspector_egui::WorldInspectorPlugin;
 use bevy_proto::ProtoPlugin;
 use bevy_prototype_debug_lines::DebugLinesPlugin;
+use bevy_rapier3d::prelude::{NoUserData, RapierPhysicsPlugin};
+use bevy_rapier3d::render::RapierDebugRenderPlugin;
 use custom_plugins::levels::LevelPlugin;
 use custom_plugins::prototypes::CustomPrototypePlugin;
 use custom_plugins::CustomPlugins;
@@ -61,6 +63,8 @@ impl Plugin for GamePlugin {
             .add_plugin(LevelPlugin)
             .add_plugin(CustomPrototypePlugin)
             .add_plugin(ProtoPlugin::default())
+            .add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
+            .add_plugin(RapierDebugRenderPlugin::default())
             .add_plugin(PlayerPlugin);
 
         #[cfg(debug_assertions)]

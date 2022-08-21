@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Default, Clone, Serialize, Deserialize, Component)]
 pub struct StartingTransform;
 
-#[derive(Default, Clone, Serialize, Deserialize, Component)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize, Component)]
 pub struct StartingTransformData {
     initialized: bool,
     set_transform: bool,
@@ -23,9 +23,11 @@ impl ProtoComponent for StartingTransform {
 impl StartingTransformData {
     #[inline]
     pub fn set(&mut self, transform: &mut Transform) {
-        if !self.initialized || self.set_transform {
-            return;
-        }
+        info!("Starting Transform {:?} {:?}", self, transform);
+
+        // if !self.initialized || self.set_transform {
+        //     return;
+        // }
         if let Some(start) = &self.transform {
             transform.translation = start.0;
             transform.rotation = start.1;

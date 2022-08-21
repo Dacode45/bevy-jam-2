@@ -1,4 +1,0 @@
-name: "Camera"
-components: 
-  - type: CameraInitialization
-  - type: StartingTransform

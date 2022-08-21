@@ -38,6 +38,7 @@ typetag = "0.2"
 serde = "1.0"
 serde_derive = "1.0"
 bevy_discovery = "0.1.0"
+bevy_rapier3d = { version = "0.16", features = [ "simd-stable", "debug-render" ] }
 
 # keep the following in sync with Bevy's dependencies
 winit = { version = "0.26.0", default-features = false }
@@ -45,3 +46,6 @@ image = { version = "0.24", default-features = false }
 
 [build-dependencies]
 embed-resource = "1.4"
+
+[profile.dev.package.bevy_rapier3d]
+opt-level = 3

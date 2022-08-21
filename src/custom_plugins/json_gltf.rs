@@ -38,9 +38,12 @@ pub struct JsonGltfNodeEx {
 pub struct JsonGltfNode {
     extensions: Option<JsonGltfNodeEx>,
     name: String,
+    rotation: Option<[f32; 4]>,
+    translation: Option<[f32; 3]>,
+    scale: Option<[f32; 3]>,
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize)]
+#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
 pub enum KHR_LightType {
     #[serde(rename = "directional")]
     Directional,
@@ -48,7 +51,7 @@ pub enum KHR_LightType {
     Point,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct KHR_LightData {
     pub color: [f32; 3],
     pub intensity: i32,
@@ -89,5 +92,13 @@ impl JsonGltf {
             .and_then(|node| node.extensions.as_ref())
             .and_then(|ex| ex.khr_lights.as_ref())
             .map(|node_light| self.get_light(node_light.light))
+    }
+
+    pub fn get_transform_for_node(&self, node_name: &str) -> Option<Transform> {
+        self.get_node(node_name).map(|node| Transform {
+            translation: node.translation.map(Into::into).unwrap_or(default()),
+            rotation: node.rotation.map(Quat::from_array).unwrap_or(default()),
+            scale: node.scale.map(Into::into).unwrap_or(default()),
+        })
     }
 }
